@@ -8,6 +8,8 @@ const MapSection = () => {
   const [selectedDestination, setSelectedDestination] = useState<number | null>(null)
   const [isHovered, setIsHovered] = useState(false)
   const [mouseDirection, setMouseDirection] = useState({ x: 0, y: 0 })
+  const [selectedCountry, setSelectedCountry] = useState<string>("all")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
   const getMouseDirection = (e: React.MouseEvent) => {
@@ -33,7 +35,7 @@ const MapSection = () => {
     setIsHovered(false)
   }
 
-  const destinations = [
+  const allDestinations = [
     {
       id: 1,
       name: "Eiffel Tower",
@@ -93,8 +95,58 @@ const MapSection = () => {
       duration: "Half day",
       description: "Famous for stunning sunsets and white buildings",
       image: "/Santorini.jpg"
+    },
+    {
+      id: 6,
+      name: "Times Square",
+      city: "New York",
+      country: "USA",
+      position: { x: 28, y: 32 },
+      rating: 4.3,
+      price: "Free",
+      duration: "2-3 hours",
+      description: "Bright lights and bustling energy of NYC",
+      image: "/UAE.jpg"
+    },
+    {
+      id: 7,
+      name: "Louvre Museum",
+      city: "Paris",
+      country: "France",
+      position: { x: 47, y: 37 },
+      rating: 4.7,
+      price: "$17",
+      duration: "3-4 hours",
+      description: "World's largest art museum",
+      image: "/Paris.jpg"
+    },
+    {
+      id: 8,
+      name: "Mount Fuji",
+      city: "Tokyo",
+      country: "Japan",
+      position: { x: 87, y: 27 },
+      rating: 4.8,
+      price: "$30",
+      duration: "Full day",
+      description: "Japan's sacred mountain and symbol",
+      image: "/Tokyo.jpg"
     }
   ]
+
+  const countries = [
+    { value: "all", label: "All Countries" },
+    { value: "USA", label: "United States" },
+    { value: "France", label: "France" },
+    { value: "Japan", label: "Japan" },
+    { value: "Indonesia", label: "Indonesia" },
+    { value: "Greece", label: "Greece" },
+    { value: "India", label:"India"},
+  ]
+
+  const destinations = selectedCountry === "all" 
+    ? allDestinations 
+    : allDestinations.filter(dest => dest.country === selectedCountry)
 
   const handleMarkerClick = (destinationId: number) => {
     setSelectedDestination(destinationId)
@@ -130,56 +182,128 @@ const MapSection = () => {
             className="lg:col-span-2"
           >
             <Card className="p-6 h-[500px] relative overflow-hidden">
+              {/* Category Dropdown - Inside Map Card */}
+              <div className="absolute top-4 left-4 z-30">
+                <div className="relative">
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="px-4 py-2 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-between group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 min-w-[160px]"
+                  >
+                    <span className="text-gray-700 font-medium text-sm">
+                      {countries.find(c => c.value === selectedCountry)?.label || "Select Category"}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isDropdownOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="ml-2"
+                    >
+                      <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </motion.div>
+                  </button>
+
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden min-w-[160px]"
+                      >
+                        {countries.map((country, index) => (
+                          <motion.button
+                            key={country.value}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.2, delay: index * 0.05 }}
+                            onClick={() => {
+                              setSelectedCountry(country.value)
+                              setIsDropdownOpen(false)
+                              setSelectedDestination(null)
+                            }}
+                            className={`w-full px-4 py-2 text-left hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 text-sm ${
+                              selectedCountry === country.value 
+                                ? 'bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 font-medium' 
+                                : 'text-gray-700 hover:text-blue-600'
+                            }`}
+                          >
+                            {country.label}
+                          </motion.button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
               {/* World Map Background */}
               <div className="absolute inset-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg flex items-center justify-center">
                 <div className="text-8xl opacity-20">🗺️</div>
               </div>
 
               {/* Destination Markers */}
-              {destinations.map((destination) => (
-                <motion.button
-                  key={destination.id}
-                  className="absolute z-10 group"
-                  style={{
-                    left: `${destination.position.x}%`,
-                    top: `${destination.position.y}%`,
-                  }}
-                  onClick={() => handleMarkerClick(destination.id)}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                  animate={{
-                    y: selectedDestination === destination.id ? [-5, 5, -5] : [0, -10, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className={`relative ${selectedDestination === destination.id ? 'z-20' : 'z-10'}`}>
-                    <MapPin 
-                      className={`h-8 w-8 transition-colors duration-200 ${
-                        selectedDestination === destination.id 
-                          ? 'text-red-500' 
-                          : 'text-blue-500 group-hover:text-red-400'
-                      }`} 
-                    />
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      {destination.name}
-                    </div>
-                  </div>
-                </motion.button>
-              ))}
+              <AnimatePresence>
+                {destinations.map((destination, index) => (
+                  <motion.button
+                    key={`${selectedCountry}-${destination.id}`}
+                    className="absolute z-10 group"
+                    style={{
+                      left: `${destination.position.x}%`,
+                      top: `${destination.position.y}%`,
+                    }}
+                    onClick={() => handleMarkerClick(destination.id)}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ 
+                      duration: 0.3, 
+                      delay: index * 0.1,
+                      type: "spring",
+                      stiffness: 200
+                    }}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <motion.div 
+                      className={`relative ${selectedDestination === destination.id ? 'z-20' : 'z-10'}`}
+                      animate={{
+                        y: selectedDestination === destination.id ? [-5, 5, -5] : [0, -10, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <MapPin 
+                        className={`h-8 w-8 transition-colors duration-200 ${
+                          selectedDestination === destination.id 
+                            ? 'text-red-500' 
+                            : 'text-blue-500 group-hover:text-red-400'
+                        }`} 
+                      />
+                      <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/90 text-white px-3 py-2 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap backdrop-blur-sm">
+                        <div className="font-semibold">{destination.name}</div>
+                        <div className="text-gray-300 text-xs">{destination.city}</div>
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/90"></div>
+                      </div>
+                    </motion.div>
+                  </motion.button>
+                ))}
+              </AnimatePresence>
 
               {/* Animated Connection Lines */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none">
                 {destinations.map((dest, index) => (
                   <motion.circle
-                    key={`pulse-${dest.id}`}
+                    key={`pulse-${selectedCountry}-${dest.id}`}
                     cx={`${dest.position.x}%`}
                     cy={`${dest.position.y}%`}
                     r="0"
                     fill="rgba(59, 130, 246, 0.3)"
+                    initial={{ r: 0 }}
                     animate={{
                       r: [0, 30, 0],
                     }}
