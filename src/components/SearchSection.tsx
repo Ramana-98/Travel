@@ -14,7 +14,7 @@ const SearchSection = () => {
       id: 1,
       name: "Paris, France",
       description: "City of Light and Romance",
-      image: "🗼",
+      image: "/Paris.jpg",
       price: "$1,299",
       duration: "7 days"
     },
@@ -22,7 +22,7 @@ const SearchSection = () => {
       id: 2,
       name: "Tokyo, Japan",
       description: "Modern meets Traditional",
-      image: "🏯",
+      image: "/Tokyo.jpg",
       price: "$1,599",
       duration: "10 days"
     },
@@ -30,7 +30,7 @@ const SearchSection = () => {
       id: 3,
       name: "Bali, Indonesia",
       description: "Tropical Paradise",
-      image: "🏝️",
+      image: "/Bali.jpg",
       price: "$899",
       duration: "5 days"
     },
@@ -38,7 +38,7 @@ const SearchSection = () => {
       id: 4,
       name: "New York, USA",
       description: "The City That Never Sleeps",
-      image: "🏙️",
+      image: "/New York.jpg",
       price: "$1,199",
       duration: "6 days"
     },
@@ -46,7 +46,7 @@ const SearchSection = () => {
       id: 5,
       name: "Santorini, Greece",
       description: "Aegean Sea Beauty",
-      image: "🏛️",
+      image: "/Santorini.jpg",
       price: "$1,099",
       duration: "8 days"
     },
@@ -54,7 +54,7 @@ const SearchSection = () => {
       id: 6,
       name: "Dubai, UAE",
       description: "Luxury and Adventure",
-      image: "🕌",
+      image: "/Dubai.jpg",
       price: "$1,399",
       duration: "7 days"
     }
@@ -145,14 +145,26 @@ const SearchSection = () => {
                 viewport={{ once: true }}
                 onHoverStart={() => setHoveredCard(destination.id)}
                 onHoverEnd={() => setHoveredCard(null)}
-                className="group cursor-pointer"
+                className={`group cursor-pointer transition-all duration-500 ${
+                  hoveredCard && hoveredCard !== destination.id 
+                    ? 'blur-sm scale-95 opacity-50' 
+                    : 'blur-0 scale-100 opacity-100'
+                }`}
               >
-                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border-0 shadow-md overflow-hidden">
+                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border-0 shadow-md overflow-hidden relative">
                   <CardHeader className="relative p-0">
-                    <div className="h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-6xl relative overflow-hidden">
-                      {destination.image}
+                    <div className="h-48 relative overflow-hidden">
+                      <img 
+                        src={destination.image} 
+                        alt={destination.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100"
+                        className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+                        initial={{ opacity: 0.3 }}
+                        animate={{ 
+                          opacity: hoveredCard === destination.id ? 0.7 : 0.3 
+                        }}
                         transition={{ duration: 0.3 }}
                       />
                     </div>
@@ -161,31 +173,39 @@ const SearchSection = () => {
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="p-6">
-                    <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+                  <motion.div
+                    className="absolute inset-0 flex flex-col justify-end p-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ 
+                      opacity: hoveredCard === destination.id ? 1 : 0,
+                      y: hoveredCard === destination.id ? 0 : 20
+                    }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <CardTitle className="text-xl mb-2 text-white drop-shadow-lg">
                       {destination.name}
                     </CardTitle>
-                    <CardDescription className="text-muted-foreground mb-4">
+                    <CardDescription className="text-white/90 mb-4 drop-shadow-md">
                       {destination.description}
                     </CardDescription>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-2xl font-bold text-primary">
+                      <span className="text-2xl font-bold text-white drop-shadow-lg">
                         {destination.price}
                       </span>
-                      <motion.div
-                        animate={{ 
-                          x: hoveredCard === destination.id ? 5 : 0,
-                          opacity: hoveredCard === destination.id ? 1 : 0.7
+                      <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        className="bg-white/90 hover:bg-white text-primary hover:text-primary backdrop-blur-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          console.log(`View details for ${destination.name}`);
                         }}
-                        transition={{ duration: 0.2 }}
                       >
-                        <Button variant="ghost" size="sm" className="text-primary hover:text-primary">
-                          View Details →
-                        </Button>
-                      </motion.div>
+                        View Details →
+                      </Button>
                     </div>
-                  </CardContent>
+                  </motion.div>
                 </Card>
               </motion.div>
             ))}

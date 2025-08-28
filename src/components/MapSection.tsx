@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MapPin, X, Star, Clock, DollarSign } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -6,6 +6,32 @@ import { Button } from "@/components/ui/button"
 
 const MapSection = () => {
   const [selectedDestination, setSelectedDestination] = useState<number | null>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  const [mouseDirection, setMouseDirection] = useState({ x: 0, y: 0 })
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  const getMouseDirection = (e: React.MouseEvent) => {
+    if (!cardRef.current) return { x: 0, y: 0 }
+    
+    const rect = cardRef.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    
+    const deltaX = e.clientX - centerX
+    const deltaY = e.clientY - centerY
+    
+    return { x: deltaX, y: deltaY }
+  }
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    const direction = getMouseDirection(e)
+    setMouseDirection(direction)
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
 
   const destinations = [
     {
@@ -18,7 +44,7 @@ const MapSection = () => {
       price: "$25",
       duration: "2-3 hours",
       description: "Iconic iron lattice tower and symbol of Paris",
-      image: "🗼"
+      image: "/Paris.jpg"
     },
     {
       id: 2,
@@ -30,7 +56,7 @@ const MapSection = () => {
       price: "$18",
       duration: "1-2 hours",
       description: "Broadcasting and observation tower in Sumida",
-      image: "🏯"
+      image: "/Tokyo.jpg"
     },
     {
       id: 3,
@@ -42,7 +68,7 @@ const MapSection = () => {
       price: "$5",
       duration: "2-3 hours",
       description: "Ancient sea temple perched on a cliff",
-      image: "🏝️"
+      image: "/Bali.jpg"
     },
     {
       id: 4,
@@ -54,7 +80,7 @@ const MapSection = () => {
       price: "$23",
       duration: "3-4 hours",
       description: "Symbol of freedom and democracy",
-      image: "🗽"
+      image: "/UAE.jpg"
     },
     {
       id: 5,
@@ -66,7 +92,7 @@ const MapSection = () => {
       price: "Free",
       duration: "Half day",
       description: "Famous for stunning sunsets and white buildings",
-      image: "🏛️"
+      image: "/Santorini.jpg"
     }
   ]
 
@@ -185,53 +211,91 @@ const MapSection = () => {
                   exit={{ opacity: 0, y: -20, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="h-[500px] overflow-hidden">
-                    <CardHeader className="relative">
-                      <button
-                        onClick={() => setSelectedDestination(null)}
-                        className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded-full transition-colors"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                      
-                      <div className="text-center">
-                        <div className="text-6xl mb-4">{selectedDest.image}</div>
-                        <CardTitle className="text-2xl mb-2">{selectedDest.name}</CardTitle>
-                        <CardDescription className="text-lg">
-                          {selectedDest.city}, {selectedDest.country}
-                        </CardDescription>
-                      </div>
-                    </CardHeader>
+                  <Card 
+                    className="h-[500px] overflow-hidden relative group cursor-pointer"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    ref={cardRef}
+                  >
+                    <button
+                      onClick={() => setSelectedDestination(null)}
+                      className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded-full transition-colors z-30 bg-white/80 backdrop-blur-sm"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    
+                    {/* Full Screen Image */}
+                    <div className="absolute inset-0">
+                      <img 
+                        src={selectedDest.image} 
+                        alt={selectedDest.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
-                    <CardContent className="space-y-6">
-                      <p className="text-muted-foreground">
+                    {/* Direction-Aware Hover Overlay */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-6"
+                      initial={{ 
+                        opacity: 0,
+                        x: mouseDirection.x > 0 ? 100 : mouseDirection.x < 0 ? -100 : 0,
+                        y: mouseDirection.y > 0 ? 100 : mouseDirection.y < 0 ? -100 : 0
+                      }}
+                      animate={{ 
+                        opacity: isHovered ? 1 : 0,
+                        x: isHovered ? 0 : (mouseDirection.x > 0 ? 100 : mouseDirection.x < 0 ? -100 : 0),
+                        y: isHovered ? 0 : (mouseDirection.y > 0 ? 100 : mouseDirection.y < 0 ? -100 : 0)
+                      }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <CardTitle className="text-2xl mb-2 text-white drop-shadow-lg">
+                        {selectedDest.name}
+                      </CardTitle>
+                      <CardDescription className="text-white/90 mb-4 drop-shadow-md text-lg">
+                        {selectedDest.city}, {selectedDest.country}
+                      </CardDescription>
+                      
+                      <p className="text-white/80 mb-4 drop-shadow-md">
                         {selectedDest.description}
                       </p>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-2 gap-4 mb-6">
                         <div className="flex items-center space-x-2">
-                          <Star className="h-4 w-4 text-yellow-500" />
-                          <span className="font-semibold">{selectedDest.rating}</span>
+                          <Star className="h-4 w-4 text-yellow-400" />
+                          <span className="font-semibold text-white">{selectedDest.rating}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <DollarSign className="h-4 w-4 text-green-500" />
-                          <span className="font-semibold">{selectedDest.price}</span>
+                          <DollarSign className="h-4 w-4 text-green-400" />
+                          <span className="font-semibold text-white">{selectedDest.price}</span>
                         </div>
                         <div className="flex items-center space-x-2 col-span-2">
-                          <Clock className="h-4 w-4 text-blue-500" />
-                          <span className="font-semibold">{selectedDest.duration}</span>
+                          <Clock className="h-4 w-4 text-blue-400" />
+                          <span className="font-semibold text-white">{selectedDest.duration}</span>
                         </div>
                       </div>
 
-                      <div className="space-y-3 pt-4">
-                        <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                      <div className="space-y-3">
+                        <Button 
+                          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log(`Added ${selectedDest.name} to trip`);
+                          }}
+                        >
                           Add to Trip
                         </Button>
-                        <Button variant="outline" className="w-full">
+                        <Button 
+                          variant="outline" 
+                          className="w-full bg-white/90 hover:bg-white text-black border-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log(`View details for ${selectedDest.name}`);
+                          }}
+                        >
                           View Details
                         </Button>
                       </div>
-                    </CardContent>
+                    </motion.div>
                   </Card>
                 </motion.div>
               ) : (
