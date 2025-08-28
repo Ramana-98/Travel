@@ -8,9 +8,9 @@ const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   
   const videos = [
-    "/2658998-hd_1920_1080_30fps.mp4",
-    "/3372015-uhd_3840_2160_30fps.mp4", 
-    "/3750637-uhd_2560_1440_30fps.mp4"
+    "/2658998-hd_1920_1080_30fps.mp4",  // First video - plays first
+    "/3372015-uhd_3840_2160_30fps.mp4", // Second video
+    "/3750637-uhd_2560_1440_30fps.mp4"  // Third video
   ]
 
   useEffect(() => {
@@ -18,6 +18,7 @@ const HeroSection = () => {
     if (!video) return
 
     const handleVideoEnd = () => {
+      // Move to next video in sequence
       setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
     }
 
@@ -47,7 +48,6 @@ const HeroSection = () => {
         className="absolute top-0 left-0 w-full h-full object-cover -z-10"
         muted
         autoPlay
-        loop
         playsInline
         preload="metadata"
         key={currentVideoIndex}
