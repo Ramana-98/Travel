@@ -23,7 +23,7 @@ const BookingSection = () => {
           duration: "8h 45m",
           stops: "Direct",
           rating: 4.8,
-          image: "✈️",
+          image: "",
           details: {
             departure: "JFK → CDG",
             departureTime: "10:30 PM",
@@ -181,21 +181,31 @@ const BookingSection = () => {
                     >
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Card className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
-                            <CardHeader className="relative overflow-hidden">
+                          <Card className={`transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden ${
+                            item.id === 101 ? 'bg-cover bg-center' : ''
+                          }`} 
+                          style={item.id === 101 ? { backgroundImage: 'url(/Flight.jpg)' } : {}}>
+                            {item.id === 101 && (
+                              <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60 z-0" />
+                            )}
+                            <CardHeader className="relative overflow-hidden z-10">
                               <div className="flex items-center justify-between mb-4">
-                                <div className="text-4xl">{item.image}</div>
+                                {item.id !== 101 && <div className="text-4xl">{item.image}</div>}
                                 <div className="flex items-center space-x-1">
-                                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                                  <span className="text-sm font-semibold">{item.rating}</span>
+                                  <Star className={`h-4 w-4 fill-current ${item.id === 101 ? 'text-yellow-400' : 'text-yellow-500'}`} />
+                                  <span className={`text-sm font-semibold ${item.id === 101 ? 'text-white' : ''}`}>{item.rating}</span>
                                 </div>
                               </div>
                               
-                              <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                              <CardTitle className={`text-xl group-hover:text-primary transition-colors ${
+                                item.id === 101 ? 'text-white drop-shadow-lg' : ''
+                              }`}>
                                 {item.title}
                               </CardTitle>
                               
-                              <CardDescription className="flex items-center space-x-2">
+                              <CardDescription className={`flex items-center space-x-2 ${
+                                item.id === 101 ? 'text-white/90 drop-shadow-md' : ''
+                              }`}>
                                 {category.category === "Flights" && (
                                   <>
                                     <span>{(item as any).airline}</span>
@@ -218,13 +228,17 @@ const BookingSection = () => {
                               </CardDescription>
                             </CardHeader>
 
-                            <CardContent>
+                            <CardContent className="relative z-10">
                               <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center space-x-4">
-                                  <div className="text-2xl font-bold text-primary">
+                                  <div className={`text-2xl font-bold ${
+                                    item.id === 101 ? 'text-white drop-shadow-lg' : 'text-primary'
+                                  }`}>
                                     {item.price}
                                   </div>
-                                  <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                                  <Badge variant="secondary" className={`${
+                                    item.id === 101 ? 'bg-white/20 text-white border-white/30 backdrop-blur-sm' : 'bg-blue-100 text-blue-800'
+                                  }`}>
                                     {item.duration}
                                   </Badge>
                                 </div>
@@ -236,7 +250,9 @@ const BookingSection = () => {
                                   }}
                                   transition={{ duration: 0.2 }}
                                 >
-                                  <Button variant="ghost" size="sm" className="text-primary">
+                                  <Button variant="ghost" size="sm" className={`cursor-pointer ${
+                                    item.id === 101 ? 'text-white hover:bg-white/20 backdrop-blur-sm' : 'text-primary'
+                                  }`}>
                                     View Details →
                                   </Button>
                                 </motion.div>
@@ -327,7 +343,7 @@ const BookingSection = () => {
                                 </div>
                                 <Button 
                                   size="lg" 
-                                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white cursor-pointer"
                                 >
                                   Book Now
                                 </Button>
