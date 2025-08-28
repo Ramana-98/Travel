@@ -1,17 +1,68 @@
+import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Plane, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const HeroSection = () => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  
+  const videos = [
+    "/2658998-hd_1920_1080_30fps.mp4",
+    "/3372015-uhd_3840_2160_30fps.mp4", 
+    "/3750637-uhd_2560_1440_30fps.mp4"
+  ]
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const handleVideoEnd = () => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length)
+    }
+
+    const handleCanPlay = () => {
+      video.play().catch(error => {
+        console.log('Video autoplay prevented:', error)
+      })
+    }
+
+    video.addEventListener('ended', handleVideoEnd)
+    video.addEventListener('canplay', handleCanPlay)
+    
+    // Load video
+    video.load()
+
+    return () => {
+      video.removeEventListener('ended', handleVideoEnd)
+      video.removeEventListener('canplay', handleCanPlay)
+    }
+  }, [currentVideoIndex, videos.length])
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Animated Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 animate-gradient-x" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Video Background */}
+      <video
+        ref={videoRef}
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        muted
+        autoPlay
+        loop
+        playsInline
+        preload="metadata"
+        key={currentVideoIndex}
+      >
+        <source src={videos[currentVideoIndex]} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      
+      {/* Dark Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 z-0" />
       
       {/* Flying Airplane Animation */}
-      <div className="absolute top-20 left-0 w-full h-20 pointer-events-none">
+      <div className="absolute top-20 left-0 w-full h-20 pointer-events-none z-20">
         <motion.div
-          className="absolute text-blue-500"
+          className="absolute text-white"
           initial={{ x: -100, y: 0 }}
           animate={{ 
             x: "calc(100vw + 100px)",
@@ -23,12 +74,12 @@ const HeroSection = () => {
             ease: "easeInOut"
           }}
         >
-          <Plane className="h-8 w-8 transform rotate-12" />
+          <Plane className="h-8 w-8 transform rotate-12 drop-shadow-lg" />
         </motion.div>
       </div>
 
       {/* Main Content */}
-      <div className="container px-4 mx-auto text-center z-10">
+      <div className="container px-4 mx-auto text-center z-10 relative">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -37,7 +88,7 @@ const HeroSection = () => {
         >
           {/* Animated Title */}
           <motion.h1 
-            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent"
+            className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-2xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -48,7 +99,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 1 }}
-              className="inline-block"
+              className="inline-block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
             >
               Starts Here
             </motion.span>
@@ -56,7 +107,7 @@ const HeroSection = () => {
 
           {/* Subtitle */}
           <motion.p
-            className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+            className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-lg"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -89,7 +140,7 @@ const HeroSection = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="px-8 py-6 text-lg font-semibold rounded-full border-2 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300"
+              className="px-8 py-6 text-lg font-semibold rounded-full border-2 border-white text-gray-900 bg-white/90 hover:bg-white hover:text-black backdrop-blur-sm transition-all duration-300 drop-shadow-lg"
             >
               Explore Destinations
             </Button>
@@ -97,7 +148,7 @@ const HeroSection = () => {
 
           {/* Stats */}
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-8 border-t border-gray-200"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-8 border-t border-white/20"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.5 }}
@@ -114,10 +165,10 @@ const HeroSection = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 1.7 + index * 0.1 }}
               >
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">
                   {stat.number}
                 </div>
-                <div className="text-muted-foreground">
+                <div className="text-white/80">
                   {stat.label}
                 </div>
               </motion.div>
@@ -127,9 +178,9 @@ const HeroSection = () => {
       </div>
 
       {/* Floating Elements */}
-      <div className="absolute top-1/4 left-10 w-20 h-20 bg-blue-200/30 rounded-full blur-xl animate-float" />
-      <div className="absolute top-1/3 right-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-float" style={{ animationDelay: "1s" }} />
-      <div className="absolute bottom-1/4 left-1/4 w-16 h-16 bg-pink-200/30 rounded-full blur-xl animate-float" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-1/4 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-float backdrop-blur-sm z-5" />
+      <div className="absolute top-1/3 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float backdrop-blur-sm z-5" style={{ animationDelay: "1s" }} />
+      <div className="absolute bottom-1/4 left-1/4 w-16 h-16 bg-white/10 rounded-full blur-xl animate-float backdrop-blur-sm z-5" style={{ animationDelay: "2s" }} />
     </section>
   )
 }
