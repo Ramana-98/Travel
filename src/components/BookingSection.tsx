@@ -40,7 +40,7 @@ const BookingSection = () => {
           duration: "14h 20m",
           stops: "1 Stop",
           rating: 4.9,
-          image: "🛫",
+          image: "",
           details: {
             departure: "LAX → NRT",
             departureTime: "11:45 AM",
@@ -63,7 +63,7 @@ const BookingSection = () => {
           price: "$189/night",
           duration: "3 nights",
           rating: 4.7,
-          image: "🏨",
+          image: "",
           details: {
             amenities: ["Free WiFi", "Breakfast", "Gym", "Spa"],
             roomType: "Deluxe King Room",
@@ -79,7 +79,7 @@ const BookingSection = () => {
           price: "$245/night",
           duration: "5 nights",
           rating: 4.8,
-          image: "🏯",
+          image: "",
           details: {
             amenities: ["Ocean View", "Onsen", "Restaurant", "Concierge"],
             roomType: "Premium Suite",
@@ -102,7 +102,7 @@ const BookingSection = () => {
           price: "$35",
           duration: "2 hours",
           rating: 4.6,
-          image: "🗼",
+          image: "",
           details: {
             includes: ["Skip-the-line access", "Audio guide", "Summit access"],
             meetingPoint: "Eiffel Tower South Pillar",
@@ -118,7 +118,7 @@ const BookingSection = () => {
           price: "$28",
           duration: "1.5 hours",
           rating: 4.5,
-          image: "🚢",
+          image: "",
           details: {
             includes: ["Commentary", "Refreshments", "Photo opportunities"],
             meetingPoint: "Pont Neuf",
@@ -179,179 +179,178 @@ const BookingSection = () => {
                       onHoverStart={() => setHoveredCard(item.id)}
                       onHoverEnd={() => setHoveredCard(null)}
                     >
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Card className={`transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden ${
-                            item.id === 101 ? 'bg-cover bg-center' : ''
-                          }`} 
-                          style={item.id === 101 ? { backgroundImage: 'url(/Flight.jpg)' } : {}}>
-                            {item.id === 101 && (
-                              <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60 z-0" />
+                      <Card className={`transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden ${
+                        item.id === 101 ? 'bg-cover bg-center' : item.id === 102 ? 'bg-cover bg-center' : item.id === 201 ? 'bg-cover bg-center' : item.id === 202 ? 'bg-cover bg-center' : item.id === 301 ? 'bg-cover bg-center' : item.id === 302 ? 'bg-cover bg-center' : ''
+                      }`} 
+                      style={item.id === 101 ? { backgroundImage: 'url(/Flight.jpg)' } : item.id === 102 ? { backgroundImage: 'url(/Tokyo-Flight.webp)' } : item.id === 201 ? { backgroundImage: 'url(/Le-Marais.jpg)' } : item.id === 202 ? { backgroundImage: 'url(/Tokyo-Resort.jpg)' } : item.id === 301 ? { backgroundImage: 'url(/Eiffel-Tower.jpg)' } : item.id === 302 ? { backgroundImage: 'url(/Seine-River.jpg)' } : {}}>
+                        {item.id === 102 && (
+                          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60 z-0" />
+                        )}
+                        <CardHeader className="relative overflow-hidden z-10">
+                          <div className="flex items-center justify-between mb-4">
+                            {item.id !== 101 && item.id !== 102 && item.id !== 201 && item.id !== 202 && item.id !== 301 && item.id !== 302 && <div className="text-4xl">{item.image}</div>}
+                            <div className="flex items-center space-x-1">
+                              <Star className={`h-4 w-4 fill-current ${item.id === 101 ? 'text-yellow-400' : 'text-yellow-500'}`} />
+                              <span className={`text-sm font-semibold ${[101, 102, 201, 202, 301, 302].includes(item.id) ? 'text-white group-hover:text-yellow-400' : ''}`}>{item.rating}</span>
+                            </div>
+                          </div>
+                          
+                          <CardTitle className={`text-xl group-hover:text-primary transition-colors ${
+                            [101, 102, 201, 202, 301, 302].includes(item.id) ? 'text-white drop-shadow-lg group-hover:text-yellow-400' : ''
+                          }`}>
+                            {item.title}
+                          </CardTitle>
+                          
+                          <CardDescription className={`flex items-center space-x-2 ${
+                            [101, 102, 201, 202, 301, 302].includes(item.id) ? 'text-white/90 drop-shadow-md group-hover:text-yellow-300' : ''
+                          }`}>
+                            {category.category === "Flights" && (
+                              <>
+                                <span>{(item as any).airline}</span>
+                                <span>•</span>
+                                <span>{(item as any).stops}</span>
+                              </>
                             )}
-                            <CardHeader className="relative overflow-hidden z-10">
-                              <div className="flex items-center justify-between mb-4">
-                                {item.id !== 101 && <div className="text-4xl">{item.image}</div>}
-                                <div className="flex items-center space-x-1">
-                                  <Star className={`h-4 w-4 fill-current ${item.id === 101 ? 'text-yellow-400' : 'text-yellow-500'}`} />
-                                  <span className={`text-sm font-semibold ${item.id === 101 ? 'text-white' : ''}`}>{item.rating}</span>
-                                </div>
-                              </div>
-                              
-                              <CardTitle className={`text-xl group-hover:text-primary transition-colors ${
-                                item.id === 101 ? 'text-white drop-shadow-lg' : ''
-                              }`}>
-                                {item.title}
-                              </CardTitle>
-                              
-                              <CardDescription className={`flex items-center space-x-2 ${
-                                item.id === 101 ? 'text-white/90 drop-shadow-md' : ''
-                              }`}>
-                                {category.category === "Flights" && (
-                                  <>
-                                    <span>{(item as any).airline}</span>
-                                    <span>•</span>
-                                    <span>{(item as any).stops}</span>
-                                  </>
-                                )}
-                                {category.category === "Hotels" && (
-                                  <>
-                                    <MapPin className="h-4 w-4" />
-                                    <span>{(item as any).location}</span>
-                                  </>
-                                )}
-                                {category.category === "Activities" && (
-                                  <>
-                                    <MapPin className="h-4 w-4" />
-                                    <span>{(item as any).location}</span>
-                                  </>
-                                )}
-                              </CardDescription>
-                            </CardHeader>
+                            {category.category === "Hotels" && (
+                              <>
+                                <MapPin className="h-4 w-4" />
+                                <span>{(item as any).location}</span>
+                              </>
+                            )}
+                            {category.category === "Activities" && (
+                              <>
+                                <MapPin className="h-4 w-4" />
+                                <span>{(item as any).location}</span>
+                              </>
+                            )}
+                          </CardDescription>
+                        </CardHeader>
 
-                            <CardContent className="relative z-10">
-                              <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center space-x-4">
-                                  <div className={`text-2xl font-bold ${
-                                    item.id === 101 ? 'text-white drop-shadow-lg' : 'text-primary'
-                                  }`}>
-                                    {item.price}
-                                  </div>
-                                  <Badge variant="secondary" className={`${
-                                    item.id === 101 ? 'bg-white/20 text-white border-white/30 backdrop-blur-sm' : 'bg-blue-100 text-blue-800'
-                                  }`}>
-                                    {item.duration}
-                                  </Badge>
-                                </div>
-                                
-                                <motion.div
-                                  animate={{ 
-                                    x: hoveredCard === item.id ? 5 : 0,
-                                    opacity: hoveredCard === item.id ? 1 : 0.7
-                                  }}
-                                  transition={{ duration: 0.2 }}
-                                >
+                        <CardContent className="relative z-10">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center space-x-4">
+                              <div className={`text-2xl font-bold ${
+                                item.id === 101 || item.id === 102 ? 'text-white drop-shadow-lg' : 'text-primary'
+                              }`}>
+                                {item.price}
+                              </div>
+                              <Badge variant="secondary" className={`${
+                                item.id === 101 || item.id === 102 ? 'bg-white/20 text-white border-white/30 backdrop-blur-sm' : 'bg-blue-100 text-blue-800'
+                              }`}>
+                                {item.duration}
+                              </Badge>
+                            </div>
+                            
+                            <motion.div
+                              animate={{ 
+                                x: hoveredCard === item.id ? 5 : 0,
+                                opacity: hoveredCard === item.id ? 1 : 0.7
+                              }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <Dialog>
+                                <DialogTrigger asChild>
                                   <Button variant="ghost" size="sm" className={`cursor-pointer ${
-                                    item.id === 101 ? 'text-white hover:bg-white/20 backdrop-blur-sm' : 'text-primary'
+                                    [101, 102, 201, 202, 301, 302].includes(item.id) ? 'text-white hover:bg-white/20 backdrop-blur-sm hover:text-yellow-400' : 'text-primary'
                                   }`}>
                                     View Details →
                                   </Button>
-                                </motion.div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </DialogTrigger>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl">
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <DialogHeader>
+                                      <div className="flex items-center space-x-4 mb-4">
+                                        {item.id !== 101 && item.id !== 102 && <div className="text-5xl">{item.image}</div>}
+                                        <div>
+                                          <DialogTitle className="text-2xl">{item.title}</DialogTitle>
+                                          <DialogDescription className="text-lg">
+                                            {category.category === "Flights" && (item as any).airline}
+                                            {category.category === "Hotels" && (item as any).location}
+                                            {category.category === "Activities" && (item as any).location}
+                                          </DialogDescription>
+                                        </div>
+                                      </div>
+                                    </DialogHeader>
 
-                        <DialogContent className="max-w-2xl">
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <DialogHeader>
-                              <div className="flex items-center space-x-4 mb-4">
-                                <div className="text-5xl">{item.image}</div>
-                                <div>
-                                  <DialogTitle className="text-2xl">{item.title}</DialogTitle>
-                                  <DialogDescription className="text-lg">
-                                    {category.category === "Flights" && (item as any).airline}
-                                    {category.category === "Hotels" && (item as any).location}
-                                    {category.category === "Activities" && (item as any).location}
-                                  </DialogDescription>
-                                </div>
-                              </div>
-                            </DialogHeader>
+                                    <div className="space-y-6">
+                                      <div className="grid grid-cols-2 gap-4">
+                                        <div className="flex items-center space-x-2">
+                                          <Star className="h-5 w-5 text-yellow-500 fill-current" />
+                                          <span className="font-semibold">{item.rating} Rating</span>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                          <Calendar className="h-5 w-5 text-blue-500" />
+                                          <span className="font-semibold">{item.duration}</span>
+                                        </div>
+                                      </div>
 
-                            <div className="space-y-6">
-                              <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center space-x-2">
-                                  <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                                  <span className="font-semibold">{item.rating} Rating</span>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                  <Calendar className="h-5 w-5 text-blue-500" />
-                                  <span className="font-semibold">{item.duration}</span>
-                                </div>
-                              </div>
+                                      <div className="space-y-4">
+                                        <h4 className="font-semibold text-lg">Details</h4>
+                                        {category.category === "Flights" && (
+                                          <div className="space-y-2">
+                                            <p><strong>Route:</strong> {(item as any).details.departure}</p>
+                                            <p><strong>Departure:</strong> {(item as any).details.departureTime}</p>
+                                            <p><strong>Arrival:</strong> {(item as any).details.arrival}</p>
+                                            <p><strong>Aircraft:</strong> {(item as any).details.aircraft}</p>
+                                            <p><strong>Baggage:</strong> {(item as any).details.baggage}</p>
+                                          </div>
+                                        )}
+                                        {category.category === "Hotels" && (
+                                          <div className="space-y-2">
+                                            <p><strong>Room:</strong> {(item as any).details.roomType}</p>
+                                            <p><strong>Check-in:</strong> {(item as any).details.checkIn}</p>
+                                            <p><strong>Check-out:</strong> {(item as any).details.checkOut}</p>
+                                            <p><strong>Cancellation:</strong> {(item as any).details.cancellation}</p>
+                                            <div>
+                                              <strong>Amenities:</strong>
+                                              <div className="flex flex-wrap gap-2 mt-2">
+                                                {(item as any).details.amenities.map((amenity: string, index: number) => (
+                                                  <Badge key={index} variant="secondary">{amenity}</Badge>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )}
+                                        {category.category === "Activities" && (
+                                          <div className="space-y-2">
+                                            <p><strong>Time:</strong> {(item as any).details.time}</p>
+                                            <p><strong>Meeting Point:</strong> {(item as any).details.meetingPoint}</p>
+                                            <p><strong>Group Size:</strong> {(item as any).details.groupSize}</p>
+                                            <div>
+                                              <strong>Includes:</strong>
+                                              <div className="flex flex-wrap gap-2 mt-2">
+                                                {(item as any).details.includes.map((include: string, index: number) => (
+                                                  <Badge key={index} variant="secondary">{include}</Badge>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
 
-                              <div className="space-y-4">
-                                <h4 className="font-semibold text-lg">Details</h4>
-                                {category.category === "Flights" && (
-                                  <div className="space-y-2">
-                                    <p><strong>Route:</strong> {(item.details as any).departure}</p>
-                                    <p><strong>Departure:</strong> {(item.details as any).departureTime}</p>
-                                    <p><strong>Arrival:</strong> {(item.details as any).arrival}</p>
-                                    <p><strong>Aircraft:</strong> {(item.details as any).aircraft}</p>
-                                    <p><strong>Baggage:</strong> {(item.details as any).baggage}</p>
-                                  </div>
-                                )}
-                                {category.category === "Hotels" && (
-                                  <div className="space-y-2">
-                                    <p><strong>Room:</strong> {(item.details as any).roomType}</p>
-                                    <p><strong>Check-in:</strong> {(item.details as any).checkIn}</p>
-                                    <p><strong>Check-out:</strong> {(item.details as any).checkOut}</p>
-                                    <p><strong>Cancellation:</strong> {(item.details as any).cancellation}</p>
-                                    <div>
-                                      <strong>Amenities:</strong>
-                                      <div className="flex flex-wrap gap-2 mt-2">
-                                        {(item.details as any).amenities.map((amenity: string, index: number) => (
-                                          <Badge key={index} variant="secondary">{amenity}</Badge>
-                                        ))}
+                                      <div className="flex items-center justify-between pt-6 border-t">
+                                        <div className="text-3xl font-bold text-primary">
+                                          {item.price}
+                                        </div>
+                                        <Button 
+                                          size="lg" 
+                                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white cursor-pointer"
+                                        >
+                                          Book Now
+                                        </Button>
                                       </div>
                                     </div>
-                                  </div>
-                                )}
-                                {category.category === "Activities" && (
-                                  <div className="space-y-2">
-                                    <p><strong>Time:</strong> {(item.details as any).time}</p>
-                                    <p><strong>Meeting Point:</strong> {(item.details as any).meetingPoint}</p>
-                                    <p><strong>Group Size:</strong> {(item.details as any).groupSize}</p>
-                                    <div>
-                                      <strong>Includes:</strong>
-                                      <div className="flex flex-wrap gap-2 mt-2">
-                                        {(item.details as any).includes.map((include: string, index: number) => (
-                                          <Badge key={index} variant="secondary">{include}</Badge>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-
-                              <div className="flex items-center justify-between pt-6 border-t">
-                                <div className="text-3xl font-bold text-primary">
-                                  {item.price}
-                                </div>
-                                <Button 
-                                  size="lg" 
-                                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white cursor-pointer"
-                                >
-                                  Book Now
-                                </Button>
-                              </div>
-                            </div>
-                          </motion.div>
-                        </DialogContent>
-                      </Dialog>
+                                  </motion.div>
+                                </DialogContent>
+                              </Dialog>
+                            </motion.div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </motion.div>
                   ))}
                 </div>
