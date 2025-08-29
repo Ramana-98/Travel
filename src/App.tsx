@@ -110,8 +110,7 @@ function App() {
               </span>
             </div>
             <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-              Your AI-powered trip planner that makes travel planning effortless. 
-              Discover, plan, and book your perfect journey with ease.
+            Plan smarter, travel better. Your trusted companion for bookings worldwide.
             </p>
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

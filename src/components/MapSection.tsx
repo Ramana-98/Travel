@@ -10,6 +10,7 @@ const MapSection = () => {
   const [mouseDirection, setMouseDirection] = useState({ x: 0, y: 0 })
   const [selectedCountry, setSelectedCountry] = useState<string>("all")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isPixelated, setIsPixelated] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
   const getMouseDirection = (e: React.MouseEvent) => {
@@ -98,39 +99,75 @@ const MapSection = () => {
     },
     {
       id: 6,
-      name: "Times Square",
-      city: "New York",
-      country: "USA",
-      position: { x: 28, y: 32 },
-      rating: 4.3,
-      price: "Free",
-      duration: "2-3 hours",
-      description: "Bright lights and bustling energy of NYC",
-      image: "/UAE.jpg"
+      name: "Taj Mahal",
+      city: "Agra",
+      country: "India",
+      position: { x: 72, y: 45 },
+      rating: 4.9,
+      price: "$15",
+      duration: "3-4 hours",
+      description: "Iconic white marble mausoleum and UNESCO World Heritage Site",
+      image: "/TajMahal.jpg"
     },
     {
       id: 7,
-      name: "Louvre Museum",
-      city: "Paris",
-      country: "France",
-      position: { x: 47, y: 37 },
-      rating: 4.7,
-      price: "$17",
-      duration: "3-4 hours",
-      description: "World's largest art museum",
-      image: "/Paris.jpg"
+      name: "Calangute Beach",
+      city: "Goa",
+      country: "India",
+      position: { x: 68, y: 55 },
+      rating: 4.5,
+      price: "Free",
+      duration: "Half day",
+      description: "Golden sandy beach with vibrant nightlife and water sports",
+      image: "/Calangute-Beach.jpg"
     },
     {
       id: 8,
-      name: "Mount Fuji",
-      city: "Tokyo",
-      country: "Japan",
-      position: { x: 87, y: 27 },
-      rating: 4.8,
-      price: "$30",
+      name: "Varkala Beach",
+      city: "Kerala",
+      country: "India",
+      position: { x: 69, y: 62 },
+      rating: 4.7,
+      price: "Free",
       duration: "Full day",
-      description: "Japan's sacred mountain and symbol",
-      image: "/Tokyo.jpg"
+      description: "Dramatic cliffs overlooking pristine beaches and Ayurvedic spas",
+      image: "/Varkala-Beach.jpg"
+    },
+    {
+      id: 9,
+      name: "Thangai Temple",
+      city: "Tamil Nadu",
+      country: "India",
+      position: { x: 71, y: 65 },
+      rating: 4.6,
+      price: "$5",
+      duration: "2-3 hours",
+      description: "Ancient Dravidian architecture temple with intricate carvings",
+      image: "/Thanjai.jpg"
+    },
+    {
+      id: 10,
+      name: "Pink City (Jaipur)",
+      city: "Rajasthan",
+      country: "India",
+      position: { x: 70, y: 48 },
+      rating: 4.8,
+      price: "$20",
+      duration: "Full day",
+      description: "Historic walled city with pink sandstone architecture and royal palaces",
+      image: "/Pink-City.jpg"
+    },
+    {
+      id: 11,
+      name: "Kashi Vishwanath Temple",
+      city: "Varanasi, Uttar Pradesh",
+      country: "India",
+      position: { x: 73, y: 50 },
+      rating: 4.9,
+      price: "Free",
+      duration: "2-3 hours",
+      description: "Sacred Hindu temple dedicated to Lord Shiva on the banks of Ganges",
+      image: "/Kashi-Vishwanath.jpg"
     }
   ]
 
@@ -150,6 +187,7 @@ const MapSection = () => {
 
   const handleMarkerClick = (destinationId: number) => {
     setSelectedDestination(destinationId)
+    setIsPixelated(false) // Reset pixelated state when changing destination
   }
 
   const selectedDest = destinations.find(d => d.id === selectedDestination)
@@ -349,12 +387,34 @@ const MapSection = () => {
                     </button>
                     
                     {/* Full Screen Image */}
-                    <div className="absolute inset-0">
+                    <div className="absolute inset-0 overflow-hidden">
                       <img 
                         src={selectedDest.image} 
                         alt={selectedDest.name} 
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full object-cover cursor-pointer transition-all duration-300 ${
+                          isPixelated 
+                            ? 'scale-110 pixelated' 
+                            : 'hover:scale-105'
+                        }`}
+                        onClick={() => setIsPixelated(!isPixelated)}
+                        style={{
+                          imageRendering: isPixelated ? 'pixelated' : 'auto',
+                          filter: isPixelated ? 'contrast(1.2) saturate(1.1)' : 'none',
+                        }}
                       />
+                      {isPixelated && (
+                        <div 
+                          className="absolute inset-0 pointer-events-none"
+                          style={{
+                            backgroundImage: `url(${selectedDest.image})`,
+                            backgroundSize: '20px 20px',
+                            backgroundRepeat: 'repeat',
+                            imageRendering: 'pixelated',
+                            opacity: 0.3,
+                            mixBlendMode: 'multiply'
+                          }}
+                        />
+                      )}
                     </div>
 
                     {/* Direction-Aware Hover Overlay */}
