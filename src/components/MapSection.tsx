@@ -42,7 +42,7 @@ const MapSection = () => {
       name: "Eiffel Tower",
       city: "Paris",
       country: "France",
-      position: { x: 45, y: 35 },
+      position: { x: 48.5, y: 32 }, 
       rating: 4.8,
       price: "$25",
       duration: "2-3 hours",
@@ -54,7 +54,7 @@ const MapSection = () => {
       name: "Tokyo Skytree",
       city: "Tokyo",
       country: "Japan",
-      position: { x: 85, y: 25 },
+      position: { x: 87, y: 28 }, 
       rating: 4.7,
       price: "$18",
       duration: "1-2 hours",
@@ -66,7 +66,7 @@ const MapSection = () => {
       name: "Uluwatu Temple",
       city: "Bali",
       country: "Indonesia",
-      position: { x: 78, y: 65 },
+      position: { x: 79, y: 58 }, 
       rating: 4.6,
       price: "$5",
       duration: "2-3 hours",
@@ -78,7 +78,7 @@ const MapSection = () => {
       name: "Statue of Liberty",
       city: "New York",
       country: "USA",
-      position: { x: 25, y: 30 },
+      position: { x: 22, y: 30 }, 
       rating: 4.5,
       price: "$23",
       duration: "3-4 hours",
@@ -90,7 +90,7 @@ const MapSection = () => {
       name: "Oia Village",
       city: "Santorini",
       country: "Greece",
-      position: { x: 52, y: 40 },
+      position: { x: 52, y: 35 }, 
       rating: 4.9,
       price: "Free",
       duration: "Half day",
@@ -102,7 +102,7 @@ const MapSection = () => {
       name: "Taj Mahal",
       city: "Agra",
       country: "India",
-      position: { x: 72, y: 45 },
+      position: { x: 72, y: 42 }, 
       rating: 4.9,
       price: "$15",
       duration: "3-4 hours",
@@ -114,7 +114,7 @@ const MapSection = () => {
       name: "Calangute Beach",
       city: "Goa",
       country: "India",
-      position: { x: 68, y: 55 },
+      position: { x: 69, y: 48 }, 
       rating: 4.5,
       price: "Free",
       duration: "Half day",
@@ -126,7 +126,7 @@ const MapSection = () => {
       name: "Varkala Beach",
       city: "Kerala",
       country: "India",
-      position: { x: 69, y: 62 },
+      position: { x: 70, y: 52 }, 
       rating: 4.7,
       price: "Free",
       duration: "Full day",
@@ -138,7 +138,7 @@ const MapSection = () => {
       name: "Thangai Temple",
       city: "Tamil Nadu",
       country: "India",
-      position: { x: 71, y: 65 },
+      position: { x: 72, y: 54 }, 
       rating: 4.6,
       price: "$5",
       duration: "2-3 hours",
@@ -150,7 +150,7 @@ const MapSection = () => {
       name: "Pink City (Jaipur)",
       city: "Rajasthan",
       country: "India",
-      position: { x: 70, y: 48 },
+      position: { x: 70, y: 43 }, 
       rating: 4.8,
       price: "$20",
       duration: "Full day",
@@ -162,7 +162,7 @@ const MapSection = () => {
       name: "Kashi Vishwanath Temple",
       city: "Varanasi, Uttar Pradesh",
       country: "India",
-      position: { x: 73, y: 50 },
+      position: { x: 73, y: 45 }, 
       rating: 4.9,
       price: "Free",
       duration: "2-3 hours",
@@ -277,8 +277,7 @@ const MapSection = () => {
               </div>
 
               {/* World Map Background */}
-              <div className="absolute inset-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg flex items-center justify-center">
-                <div className="text-8xl opacity-20">🗺️</div>
+              <div className="absolute inset-6 bg-cover bg-center rounded-lg" style={{ backgroundImage: 'url("/World-Map.jpg")' }}>
               </div>
 
               {/* Destination Markers */}
