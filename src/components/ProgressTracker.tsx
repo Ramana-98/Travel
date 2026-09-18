@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 const ProgressTracker = () => {
-  const [progress, setProgress] = useState(0)
   const [animatedProgress, setAnimatedProgress] = useState(0)
 
   const tripSteps = [
@@ -49,8 +48,6 @@ const ProgressTracker = () => {
   const progressPercentage = (completedSteps / totalSteps) * 100
 
   useEffect(() => {
-    setProgress(progressPercentage)
-    
     // Animate progress bar
     const timer = setTimeout(() => {
       setAnimatedProgress(progressPercentage)

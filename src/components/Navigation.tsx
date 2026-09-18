@@ -2,15 +2,6 @@ import { useState, useEffect } from "react"
 import { Menu, Plane, Home, MapPin, Calendar, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import {
   Sheet,
   SheetContent,
   SheetDescription,

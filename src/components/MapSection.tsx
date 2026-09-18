@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MapPin, X, Star, Clock, DollarSign } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 const MapSection = () => {

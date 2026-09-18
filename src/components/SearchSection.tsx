@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Search, MapPin, Calendar, Users, X, Star, Clock, DollarSign, Plane, Camera, MapIcon, Wifi, Car, Utensils } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 const SearchSection = () => {
   const [searchQuery, setSearchQuery] = useState("")

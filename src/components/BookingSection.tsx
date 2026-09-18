@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Plane, Hotel, Camera, Star, Users, Calendar, MapPin } from "lucide-react"
+import { Plane, Hotel, Camera, Star, Calendar, MapPin } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
