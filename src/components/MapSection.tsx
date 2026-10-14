@@ -135,7 +135,7 @@ const MapSection = () => {
     },
     {
       id: 9,
-      name: "Thangai Temple",
+      name: "Thanjai Temple",
       city: "Tamil Nadu",
       country: "India",
       position: { x: 72, y: 54 }, 
